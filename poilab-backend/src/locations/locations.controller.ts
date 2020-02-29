@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, Patch, Delete } from "@nestjs/common";
+import { Controller, Post, Body, Get, Param, Patch, Delete, Query } from "@nestjs/common";
 import { LocationsService } from "./locations.service";
 
 
@@ -37,9 +37,10 @@ export class ProductsController {
     }
 
     @Get("api/route")
-
-    async findShortestPath(){
-        return "Shortes path";
+    async findShortestPath(@Query() params){
+        // console.log(params);
+        const path = await this.locationsService.getShortestPath(params["from"], params["to"])
+        return path;
     }
       
 } 

@@ -27,5 +27,12 @@ export class LocationsService {
         }));
     }
 
+    async getShortestPath(source:string, destination: string ){
+        // implement the shorestes algo
+        console.log(source,destination);
+
+        return "run the Dijkastra or Bellman Ford Algo"
+    }
+
   
 }
