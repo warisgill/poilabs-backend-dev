@@ -28,18 +28,18 @@ export class ProductsController {
         this.locationsService = locationsService;
     } //nestjs will create this object
     
-    @Get("child")
+    @Get("childs")
     async getChildren(){
-        console.log("request recv");
+        //console.log("request recv");
         const points = await this.locationsService.fetchChildren();
-        console.log(points.length)
+        //console.log(points.length)
         return points; 
     }
 
     @Get("api/route")
-    async findShortestPath(@Query() params){
+    findShortestPath(@Query() params){
         // console.log(params);
-        const path = await this.locationsService.getShortestPath(params["from"], params["to"])
+        const path = this.locationsService.getShortestPath(params["from"], params["to"])
         return path;
     }
       

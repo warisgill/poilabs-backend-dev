@@ -3,7 +3,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from 'mongoose'
 
 import {Point} from './locations.model'
-import { ProductsController } from "./locations.controller";
+import * as Graph  from "node-dijkstra"
 
 @Injectable() // To make following class injectable.
 export class LocationsService {
@@ -14,8 +14,35 @@ export class LocationsService {
         =>.exec() returns a promise
         =>.save() returns a promise
     */
-    constructor(@InjectModel('Point') private readonly locationModel: Model<Point>) { 
+    
+    private nodes : any;
+    private graph = new Graph();
+
+    constructor(@InjectModel('Point') private readonly locationModel: Model<Point>) {
+        this.constructGraph();
     } 
+
+    private async constructGraph(){
+        const points = await this.locationModel.find().exec();
+        
+        this.nodes = points.map(point=>({
+            id: point.id,
+            neighbor: point.navigation.segments
+        }));
+
+        this.nodes.forEach(element => {
+          let temp = {};
+          if(element.neighbor){
+            element.neighbor.forEach(n => {
+                temp[n.id] = n.weight;
+            });
+          }
+          this.graph.addNode(element.id,temp)  
+        });
+        
+        //console.log(this.graph);
+       //this.getShortestPath("e7a8cf75-b0f0-9c85-bd1a-36c8f60bef00", "dd91c645-1301-447d-baf9-40de4649d57a");
+    }
     
     async fetchChildren() {
         const points_promise = await this.locationModel.find({"navigation.properties.isVisibleOnList": true}).exec();
@@ -27,11 +54,26 @@ export class LocationsService {
         }));
     }
 
-    async getShortestPath(source:string, destination: string ){
-        // implement the shorestes algo
-        console.log(source,destination);
+    getShortestPath(source:string, destination: string ){
+        if(source === destination){
+            throw new NotFoundException("Source and Destination addresses are same.")
+        }
+        
+        const result = this.graph.path(source,destination, {cost:true});
+        const short_path = {dist: result.cost, route:[]};
 
-        return "run the Dijkastra or Bellman Ford Algo"
+        if(result.path){
+            let cost: number;
+            for (let i = 0; i<result.path.length-1; i++){
+                cost = this.graph.path(result.path[i],result.path[i+1], {cost:true})["cost"]; 
+                short_path.route.push([result.path[i], cost])
+            }
+            short_path.route.push([destination]);
+        } else {
+            throw new NotFoundException("Path not found.");
+        }
+
+        return short_path;
     }
 
   
