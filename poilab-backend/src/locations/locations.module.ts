@@ -1,5 +1,3 @@
-// to tie our prouduct feature 
-
 import { Module } from "@nestjs/common";
 import { ProductsController } from "./locations.controller";
 import { LocationsService } from "./locations.service";
@@ -14,4 +12,4 @@ const obj = {
 
 @Module(obj)
 
-export class LocationsModule{} // now let to know nestjs about this module
+export class LocationsModule{}

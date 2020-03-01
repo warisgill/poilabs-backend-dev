@@ -6,7 +6,7 @@ let res;
 
 beforeAll(async () => { // initializing the browser
     browser = await Puppeteer.launch({
-      headless: true // change it false for GUI browser.
+      headless: true // Change it false for GUI browser.
     });
     page = await browser.newPage();
 });

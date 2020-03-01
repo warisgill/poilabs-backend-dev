@@ -7,13 +7,6 @@ import * as Graph  from "node-dijkstra"
 
 @Injectable() // To make following class injectable.
 export class LocationsService {
-    /*
-        =>to inject the Mongoose Point Model
-        =>locationModel is constructor funciton
-        =>locationModel is has type of document.
-        =>.exec() returns a promise
-        =>.save() returns a promise
-    */
     
     private nodes : any;
     private graph = new Graph();
@@ -41,7 +34,6 @@ export class LocationsService {
         });
         
         //console.log(this.graph);
-       //this.getShortestPath("e7a8cf75-b0f0-9c85-bd1a-36c8f60bef00", "dd91c645-1301-447d-baf9-40de4649d57a");
     }
     
     async fetchChildren() {
@@ -75,6 +67,5 @@ export class LocationsService {
 
         return short_path;
     }
-
   
 }
