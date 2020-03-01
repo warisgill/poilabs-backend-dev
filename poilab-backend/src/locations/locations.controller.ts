@@ -30,16 +30,13 @@ export class ProductsController {
     
     @Get("childs")
     async getChildren(){
-        //console.log("request recv");
         const points = await this.locationsService.fetchChildren();
-        //console.log(points.length)
         return points; 
     }
 
     @Get("api/route")
-    findShortestPath(@Query() params){
-        // console.log(params);
-        const path = this.locationsService.getShortestPath(params["from"], params["to"])
+    findShortestPath(@Query("from") source: string,@Query("to") dest:string){
+        const path = this.locationsService.getShortestPath(source, dest);
         return path;
     }
       

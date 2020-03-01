@@ -56,7 +56,7 @@ export class LocationsService {
 
     getShortestPath(source:string, destination: string ){
         if(source === destination){
-            throw new NotFoundException("Source and Destination addresses are same.")
+            throw new NotFoundException("Source and destination are same.")
         }
         
         const result = this.graph.path(source,destination, {cost:true});
