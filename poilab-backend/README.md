@@ -51,7 +51,7 @@ $ npm run start:prod
 
 ```bash
 # tests
-$ npm test
+$ npm test #unit test + e2e
 ```
 
 ## Support
